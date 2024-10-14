@@ -1,4 +1,13 @@
-import './style.css'
+import './style.css';
+
+let preguntaActual = 0; 
+const preguntas = [
+  "What is the capital of France?",
+  "What is the longest river in the world?",
+  "Who wrote Romeo and Juliet?",
+  "How many planets are there in our solar system?"
+];
+const totalPreguntas = preguntas.length; 
 
 const container = document.createElement('div');
 container.classList.add('container');
@@ -8,8 +17,9 @@ const header = document.createElement('h2');
 header.textContent = 'Quizz';
 container.appendChild(header);
 
+
 const parrafo = document.createElement('p');
-parrafo.textContent = 'What is the capital of France?';
+parrafo.textContent = preguntas[preguntaActual]; 
 container.appendChild(parrafo);
 
 const lista = document.createElement('ul');
@@ -22,7 +32,7 @@ for (let i = 0; i < respuesta.length; i++) {
   const boton = document.createElement('button');
   boton.classList.add('answer-btn');
   boton.textContent = respuesta[i];
-  lista.appendChild(boton);
+  item.appendChild(boton);
   lista.appendChild(item);
 }
 
@@ -33,9 +43,35 @@ container.appendChild(footer);
 const botonPrevious = document.createElement('button');
 botonPrevious.textContent = 'Previous';
 botonPrevious.classList.add('footer-btn');
+botonPrevious.disabled = true; 
 footer.appendChild(botonPrevious);
+
 
 const botonNext = document.createElement('button');
 botonNext.textContent = 'Next';
 botonNext.classList.add('footer-btn');
 footer.appendChild(botonNext);
+
+function actualizarPregunta() {
+  parrafo.textContent = preguntas[preguntaActual];  
+  actualizarBoton(); 
+}
+
+function actualizarBoton() {
+  botonPrevious.disabled = preguntaActual === 0;
+  botonNext.disabled = preguntaActual === totalPreguntas - 1;
+}
+
+botonNext.addEventListener('click', () => {
+  if (preguntaActual < totalPreguntas - 1) {
+    preguntaActual++;  
+    actualizarPregunta();
+  }
+});
+
+botonPrevious.addEventListener('click', () => {
+  if (preguntaActual > 0) {
+    preguntaActual--;  
+    actualizarPregunta();
+  }
+});
