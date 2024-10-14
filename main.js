@@ -7,6 +7,11 @@ const preguntas = [
   "Who wrote Romeo and Juliet?",
   "How many planets are there in our solar system?"
 ];
+const respuestas = [
+  ['London', 'Berlin', 'Paris', 'Madrid'],
+  ['Nilo', 'Amazonas', 'Ebro', 'Thymes'],
+  ['Becquer', 'Neruda', 'Jane Austen', 'Shakespeare'],
+  ['9', '8', '10', '7' ]];
 const totalPreguntas = preguntas.length; 
 
 const container = document.createElement('div');
@@ -26,14 +31,18 @@ const lista = document.createElement('ul');
 lista.classList.add('container-answers');
 container.appendChild(lista);
 
-const respuesta = ['London', 'Berlin', 'Paris', 'Madrid'];
-for (let i = 0; i < respuesta.length; i++) {
-  const item = document.createElement('li');
-  const boton = document.createElement('button');
-  boton.classList.add('answer-btn');
-  boton.textContent = respuesta[i];
-  item.appendChild(boton);
-  lista.appendChild(item);
+/*se limpian las respuestas anteriores, y ahora para la pregunta actual
+se cargan sus respectivas respuestas con sus botones */
+function crearBotonRespuesta() {
+  lista.innerHTML = '';
+  respuestas[preguntaActual].forEach((respuesta) => {
+    const item = document.createElement('li');
+    const boton = document.createElement('button');
+    boton.classList.add('answer-btn');
+    boton.textContent = respuesta;
+    item.appendChild(boton);
+    lista.appendChild(item);
+  });
 }
 
 const footer = document.createElement('div');
@@ -61,8 +70,9 @@ function actualizarBoton() {
 
 //se muestra la pregunta actual y se comprueba si hay que deshabilitar o no algún botton
 function actualizarPregunta() {
-  parrafo.textContent = preguntas[preguntaActual];  
-  actualizarBoton(); 
+  parrafo.textContent = preguntas[preguntaActual];
+  crearBotonRespuesta();
+  actualizarBoton();
 }
 
 
@@ -83,3 +93,5 @@ botonPrevious.addEventListener('click', () => {
     actualizarPregunta();
   }
 });
+
+crearBotonRespuesta();
