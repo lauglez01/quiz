@@ -52,16 +52,22 @@ botonNext.textContent = 'Next';
 botonNext.classList.add('footer-btn');
 footer.appendChild(botonNext);
 
+/*si la pregunta actual es la 0, se deshabilita el previous,
+y si es la ultima, se deshabilita el next*/
+function actualizarBoton() {
+  botonPrevious.disabled = preguntaActual == 0;
+  botonNext.disabled = preguntaActual == totalPreguntas - 1;
+}
+
+//se muestra la pregunta actual y se comprueba si hay que deshabilitar o no algún botton
 function actualizarPregunta() {
   parrafo.textContent = preguntas[preguntaActual];  
   actualizarBoton(); 
 }
 
-function actualizarBoton() {
-  botonPrevious.disabled = preguntaActual === 0;
-  botonNext.disabled = preguntaActual === totalPreguntas - 1;
-}
 
+/*hasta que llega a la última pregunta, se va actualizando el contador
+y va actualizando la pregunta cada vez que hagamos click en next*/
 botonNext.addEventListener('click', () => {
   if (preguntaActual < totalPreguntas - 1) {
     preguntaActual++;  
@@ -69,6 +75,8 @@ botonNext.addEventListener('click', () => {
   }
 });
 
+/*mientras no estemos en la primera pregunta, cada vez que hagamos click en previous
+se actualiza la pregunta y el contador va restando */
 botonPrevious.addEventListener('click', () => {
   if (preguntaActual > 0) {
     preguntaActual--;  
