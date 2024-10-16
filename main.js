@@ -40,19 +40,41 @@ const lista = document.createElement('ul');
 lista.classList.add('container-answers');
 container.appendChild(lista);
 
+const respuestasSeleccionadas = [];
+
 /*se limpian las respuestas anteriores, y ahora para la pregunta actual
 se cargan sus respectivas respuestas con sus botones */
 function crearBotonRespuesta() {
-    lista.innerHTML = '';
-    mockData[preguntaActual].respuestas.forEach((respuestas) => {
+  lista.innerHTML = ''; 
+
+  mockData[preguntaActual].respuestas.forEach((respuesta) => {
     const item = document.createElement('li');
     const boton = document.createElement('button');
     boton.classList.add('answer-btn');
-    boton.textContent = respuestas;
+    boton.textContent = respuesta;
+
+    if (respuestasSeleccionadas[preguntaActual] === respuesta) {
+      boton.style.backgroundColor = '#3CD371';
+    }
+
+    boton.addEventListener('click', (e) => {
+      resetearColores(); 
+      e.target.style.backgroundColor = '#3CD371'; 
+      respuestasSeleccionadas[preguntaActual] = respuesta;
+    });
+
     item.appendChild(boton);
     lista.appendChild(item);
   });
 }
+
+function resetearColores() {
+  const botones = document.querySelectorAll('.answer-btn');
+  botones.forEach((boton) => {
+    boton.style.backgroundColor = null;
+  });
+}
+
 
 const footer = document.createElement('div');
 footer.classList.add('container-footer');
@@ -102,5 +124,7 @@ botonPrevious.addEventListener('click', () => {
     actualizarPregunta();
   }
 });
+
+
 
 crearBotonRespuesta();
