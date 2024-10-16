@@ -1,18 +1,27 @@
 import './style.css';
 
 let preguntaActual = 0; 
-const preguntas = [
-  "What is the capital of France?",
-  "What is the longest river in the world?",
-  "Who wrote Romeo and Juliet?",
-  "How many planets are there in our solar system?"
+
+const mockData = [
+  {
+    pregunta: "What is the capital of France?",
+    respuestas:['London', 'Berlin', 'Paris', 'Madrid']
+  },
+  {
+    pregunta: "What is the longest river in the world?",
+    respuestas:  ['Amazonas', 'Nilo', 'Yangsté', 'Thymes']
+  },
+  {
+    pregunta: "Who wrote Romeo and Juliet?",
+    respuestas: ['Jane Austen', 'Neruda', 'Dickens', 'Shakespeare']
+  },
+  {
+    pregunta: "How many planets are there in our solar system?",
+    respuestas: ['9', '8', '10', '7' ]
+  }
 ];
-const respuestas = [
-  ['London', 'Berlin', 'Paris', 'Madrid'],
-  ['Nilo', 'Amazonas', 'Ebro', 'Thymes'],
-  ['Becquer', 'Neruda', 'Jane Austen', 'Shakespeare'],
-  ['9', '8', '10', '7' ]];
-const totalPreguntas = preguntas.length; 
+
+const totalPreguntas = mockData.length; 
 
 const container = document.createElement('div');
 container.classList.add('container');
@@ -24,7 +33,7 @@ container.appendChild(header);
 
 
 const parrafo = document.createElement('p');
-parrafo.textContent = preguntas[preguntaActual]; 
+parrafo.textContent = mockData[preguntaActual].pregunta; 
 container.appendChild(parrafo);
 
 const lista = document.createElement('ul');
@@ -34,12 +43,12 @@ container.appendChild(lista);
 /*se limpian las respuestas anteriores, y ahora para la pregunta actual
 se cargan sus respectivas respuestas con sus botones */
 function crearBotonRespuesta() {
-  lista.innerHTML = '';
-  respuestas[preguntaActual].forEach((respuesta) => {
+    lista.innerHTML = '';
+    mockData[preguntaActual].respuestas.forEach((respuestas) => {
     const item = document.createElement('li');
     const boton = document.createElement('button');
     boton.classList.add('answer-btn');
-    boton.textContent = respuesta;
+    boton.textContent = respuestas;
     item.appendChild(boton);
     lista.appendChild(item);
   });
@@ -70,7 +79,7 @@ function actualizarBoton() {
 
 //se muestra la pregunta actual y se comprueba si hay que deshabilitar o no algún botton
 function actualizarPregunta() {
-  parrafo.textContent = preguntas[preguntaActual];
+  parrafo.textContent = mockData[preguntaActual].pregunta;
   crearBotonRespuesta();
   actualizarBoton();
 }
