@@ -5,19 +5,23 @@ let preguntaActual = 0;
 const mockData = [
   {
     pregunta: "What is the capital of France?",
-    respuestas:['London', 'Berlin', 'Paris', 'Madrid']
+    respuestas:['London', 'Berlin', 'Paris', 'Madrid'],
+    correcta: 2
   },
   {
     pregunta: "What is the longest river in the world?",
-    respuestas:  ['Amazonas', 'Nilo', 'Yangsté', 'Thymes']
+    respuestas:  ['Amazonas', 'Nilo', 'Yangsté', 'Thymes'],
+    correcta: 1
   },
   {
     pregunta: "Who wrote Romeo and Juliet?",
-    respuestas: ['Jane Austen', 'Neruda', 'Dickens', 'Shakespeare']
+    respuestas: ['Jane Austen', 'Neruda', 'Dickens', 'Shakespeare'],
+    correcta: 3
   },
   {
     pregunta: "How many planets are there in our solar system?",
-    respuestas: ['9', '8', '10', '7' ]
+    respuestas: ['9', '8', '10', '7' ],
+    correcta: 1
   }
 ];
 
@@ -52,15 +56,16 @@ function crearBotonRespuesta() {
     const boton = document.createElement('button');
     boton.classList.add('answer-btn');
     boton.textContent = respuesta;
-
+    console.log(respuestasSeleccionadas);
     if (respuestasSeleccionadas[preguntaActual] === respuesta) {
       boton.style.backgroundColor = '#3CD371';
     }
 
-    boton.addEventListener('click', (e) => {
+    boton.addEventListener('click', () => {
       resetearColores(); 
-      e.target.style.backgroundColor = '#3CD371'; 
+      boton.style.backgroundColor = '#3CD371'; 
       respuestasSeleccionadas[preguntaActual] = respuesta;
+      actualizarPregunta();
     });
 
     item.appendChild(boton);
@@ -92,11 +97,20 @@ botonNext.textContent = 'Next';
 botonNext.classList.add('footer-btn');
 footer.appendChild(botonNext);
 
+const botonCheck = document.createElement('button');
+botonCheck.textContent = 'Check';
+botonCheck.classList.add('footer-btn');
+botonCheck.disabled = true;
+footer.appendChild(botonCheck);
+
 /*si la pregunta actual es la 0, se deshabilita el previous,
 y si es la ultima, se deshabilita el next*/
 function actualizarBoton() {
   botonPrevious.disabled = preguntaActual == 0;
   botonNext.disabled = preguntaActual == totalPreguntas - 1;
+  if (respuestasSeleccionadas.length === totalPreguntas){
+    botonCheck.disabled = false;
+  }
 }
 
 //se muestra la pregunta actual y se comprueba si hay que deshabilitar o no algún botton
@@ -125,6 +139,20 @@ botonPrevious.addEventListener('click', () => {
   }
 });
 
+
+botonCheck.addEventListener('click', () => {
+  const aciertos = 0;
+  respuestasSeleccionadas.forEach((respuestasSeleccionadas, respuesta) => {
+    if (respuestasSeleccionadas === mockData[preguntaActual].correcta){
+      aciertos++;
+    }
+  });
+  if (aciertos) {
+    alert('¡Felicidades! Todas las respuestas son correctas.');
+  } else {
+    alert('Algunas respuestas son incorrectas. Inténtalo de nuevo.');
+  }
+});
 
 
 crearBotonRespuesta();
