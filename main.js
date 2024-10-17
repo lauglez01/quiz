@@ -35,7 +35,6 @@ const header = document.createElement('h2');
 header.textContent = 'Quizz';
 container.appendChild(header);
 
-
 const parrafo = document.createElement('p');
 parrafo.textContent = mockData[preguntaActual].pregunta; 
 container.appendChild(parrafo);
@@ -44,6 +43,34 @@ const lista = document.createElement('ul');
 lista.classList.add('container-answers');
 container.appendChild(lista);
 
+const modal = document.createElement('div');
+modal.classList.add('modal');
+
+const modalContent = document.createElement('div');
+modalContent.classList.add('modal-content');
+
+const cerrar = document.createElement('span');
+cerrar.classList.add('modal-close');
+cerrar.textContent = 'x'; // Usamos '×' en lugar de HTML '&times;'
+
+const modalMensaje = document.createElement('p');
+
+modalContent.appendChild(cerrar);
+modalContent.appendChild(modalMensaje);
+modal.appendChild(modalContent);
+document.body.appendChild(modal);
+
+cerrar.addEventListener('click', () => {
+  modal.style.visibility = 'hidden';
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    modal.style.visibility = 'hidden';
+  }
+});
+
+
 const respuestasSeleccionadas = [];
 
 /*se limpian las respuestas anteriores, y ahora para la pregunta actual
@@ -51,20 +78,24 @@ se cargan sus respectivas respuestas con sus botones */
 function crearBotonRespuesta() {
   lista.innerHTML = ''; 
 
-  mockData[preguntaActual].respuestas.forEach((respuesta) => {
+  /*tuve que poner tanto la respuesta como el index para obtener la posicion de la respuesta correcta
+  y asi poder compararlo a la hora de verificar las respuestas, ya que 'correcta' es la posicion, no un string
+  */
+
+  mockData[preguntaActual].respuestas.forEach((respuesta, index) => {
     const item = document.createElement('li');
     const boton = document.createElement('button');
     boton.classList.add('answer-btn');
     boton.textContent = respuesta;
     console.log(respuestasSeleccionadas);
-    if (respuestasSeleccionadas[preguntaActual] === respuesta) {
+    if (respuestasSeleccionadas[preguntaActual] === index) {
       boton.style.backgroundColor = '#3CD371';
     }
 
     boton.addEventListener('click', () => {
       resetearColores(); 
       boton.style.backgroundColor = '#3CD371'; 
-      respuestasSeleccionadas[preguntaActual] = respuesta;
+      respuestasSeleccionadas[preguntaActual] = index;
       actualizarPregunta();
     });
 
@@ -141,17 +172,17 @@ botonPrevious.addEventListener('click', () => {
 
 
 botonCheck.addEventListener('click', () => {
-  const aciertos = 0;
+  let aciertos = 0;
+
   respuestasSeleccionadas.forEach((respuestasSeleccionadas, respuesta) => {
-    if (respuestasSeleccionadas === mockData[preguntaActual].correcta){
+    if (respuestasSeleccionadas === mockData[respuesta].correcta) {
       aciertos++;
     }
   });
-  if (aciertos) {
-    alert('¡Felicidades! Todas las respuestas son correctas.');
-  } else {
-    alert('Algunas respuestas son incorrectas. Inténtalo de nuevo.');
-  }
+
+  modalMensaje.textContent = 'Tienes ' + aciertos + ' respuestas correctas';
+  modal.style.opacity = 1;
+  modal.style.visibility = 'visible';
 });
 
 
