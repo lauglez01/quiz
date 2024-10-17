@@ -108,7 +108,7 @@ y si es la ultima, se deshabilita el next*/
 function actualizarBoton() {
   botonPrevious.disabled = preguntaActual == 0;
   botonNext.disabled = preguntaActual == totalPreguntas - 1;
-  if (respuestasSeleccionadas.length === totalPreguntas){
+  if (respuestasSeleccionadas.filter(Boolean).length === totalPreguntas){ //asegura de que estan todas las respuestas seleccionadas y no sean empty/null
     botonCheck.disabled = false;
   }
 }
