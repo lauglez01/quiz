@@ -46,17 +46,25 @@ container.appendChild(lista);
 const modal = document.createElement('div');
 modal.classList.add('modal');
 
+const modalTitulo = document.createElement('h1');
+modalTitulo.textContent = 'Resultados';
+
 const modalContent = document.createElement('div');
 modalContent.classList.add('modal-content');
 
+const separador = document.createElement('hr');
+
 const cerrar = document.createElement('span');
 cerrar.classList.add('modal-close');
-cerrar.textContent = 'x'; // Usamos '×' en lugar de HTML '&times;'
+cerrar.textContent = 'x'; 
 
 const modalMensaje = document.createElement('p');
 
 modalContent.appendChild(cerrar);
+modalContent.appendChild(modalTitulo);
+modalContent.appendChild(separador);
 modalContent.appendChild(modalMensaje);
+
 modal.appendChild(modalContent);
 document.body.appendChild(modal);
 
@@ -64,12 +72,11 @@ cerrar.addEventListener('click', () => {
   modal.style.visibility = 'hidden';
 });
 
-window.addEventListener('click', (event) => {
-  if (event.target === modal) {
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
     modal.style.visibility = 'hidden';
   }
 });
-
 
 const respuestasSeleccionadas = [];
 
@@ -184,6 +191,5 @@ botonCheck.addEventListener('click', () => {
   modal.style.opacity = 1;
   modal.style.visibility = 'visible';
 });
-
 
 crearBotonRespuesta();
